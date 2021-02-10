@@ -8,7 +8,7 @@ const Navbar: React.FC<NavbarProps> = ({}) => {
     return (
         <div className="fixed inset-x-0 top-0 z-10 flex items-center justify-center h-12 px-5 bg-white">
             {/* Logo & title */}
-            <div className="flex item center">
+            <div className="flex items-center">
                 <Link href="/">
                     <a>
                         <RedditLogo className="w-8 h-8 mr-2" />

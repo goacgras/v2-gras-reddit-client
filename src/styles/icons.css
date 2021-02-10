@@ -1,0 +1,32 @@
+@font-face {
+  font-family: 'gras-reddit';
+  src:
+    url('fonts/gras-reddit.ttf?mnwtcs') format('truetype'),
+    url('fonts/gras-reddit.woff?mnwtcs') format('woff'),
+    url('fonts/gras-reddit.svg?mnwtcs#gras-reddit') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'gras-reddit' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-arrow-up:before {
+  content: "\ea32";
+}
+.icon-arrow-down:before {
+  content: "\ea36";
+}
