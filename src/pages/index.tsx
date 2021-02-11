@@ -5,39 +5,40 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 
 import { Post } from '../types';
-import { PostCard } from '../components/PostCard';
+import PostCard from '../components/PostCard';
 // import { GetServerSideProps } from 'next';
+import useSWR from 'swr';
 
 dayjs.extend(relativeTime);
 
 export default function Home({}) {
-    const [posts, setPosts] = useState<Post[]>([]);
+    const { data: posts } = useSWR<Post[]>('/posts');
 
-    useEffect(() => {
-        axios
-            .get('/posts')
-            .then((res) => setPosts(res.data))
-            .catch((err) => console.log(err));
-    }, []);
+    // const [posts, setPosts] = useState<Post[]>([]);
 
-    console.log(posts);
+    // useEffect(() => {
+    //     axios
+    //         .get('/posts')
+    //         .then((res) => setPosts(res.data))
+    //         .catch((err) => console.log(err));
+    // }, []);
 
     return (
-        <div className="pt-12">
+        <>
             <Head>
                 <title>v2-gras-reddit: Homepage</title>
             </Head>
             <div className="container flex pt-4">
                 {/* Post feed */}
                 <div className="w-160">
-                    {posts.map((post) => (
+                    {posts?.map((post) => (
                         <PostCard post={post} key={post.identifier} />
                     ))}
                 </div>
 
                 {/* sidebar */}
             </div>
-        </div>
+        </>
     );
 }
 

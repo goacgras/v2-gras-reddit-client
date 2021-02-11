@@ -4,24 +4,32 @@ import NextLink from 'next/link';
 import axios from 'axios';
 import InputGroup from '../components/InputGroup';
 import { useRouter } from 'next/router';
+import { useAuthDispatch, useAuthState } from '../context/auth';
 
 interface registerProps {}
 
-const Register: React.FC<{}> = () => {
+const Login: React.FC<{}> = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState<any>({});
 
     const router = useRouter();
 
+    const dispatch = useAuthDispatch();
+    const { authenticated } = useAuthState();
+
+    if (authenticated) router.push('/');
+
     const submitForm = async (event: FormEvent) => {
         event.preventDefault();
 
         try {
-            await axios.post('/auth/login', {
+            const res = await axios.post('/auth/login', {
                 password,
                 username
             });
+
+            dispatch('LOGIN', res.data);
             router.push('/');
         } catch (err) {
             console.log(err);
@@ -80,4 +88,4 @@ const Register: React.FC<{}> = () => {
     );
 };
 
-export default Register;
+export default Login;

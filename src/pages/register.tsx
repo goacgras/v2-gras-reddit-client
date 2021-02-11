@@ -4,6 +4,7 @@ import NextLink from 'next/link';
 import axios from 'axios';
 import InputGroup from '../components/InputGroup';
 import { useRouter } from 'next/router';
+import { useAuthState } from '../context/auth';
 
 interface registerProps {}
 
@@ -15,6 +16,9 @@ const Register: React.FC<{}> = () => {
     const [errors, setErrors] = useState<any>({});
 
     const router = useRouter();
+
+    const { authenticated } = useAuthState();
+    if (authenticated) router.push('/');
 
     const submitForm = async (event: FormEvent) => {
         event.preventDefault();
