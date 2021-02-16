@@ -24,7 +24,12 @@ const fetcher = async (url: string) => {
 function MyApp({ Component, pageProps }: AppProps) {
     const { pathname } = useRouter();
     // const authRoutes = pathname === '/login' || pathname === '/register'
-    const authRoutes = ['/login', '/register'];
+    const authRoutes = [
+        '/login',
+        '/register',
+        '/change-password/[token]',
+        '/forgot-password'
+    ];
     const authRoute = authRoutes.includes(pathname);
     return (
         <SWRConfig

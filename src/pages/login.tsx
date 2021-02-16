@@ -75,13 +75,22 @@ const Login: React.FC<{}> = () => {
                             Login
                         </button>
                     </form>
+                    <div className="flex flex-col">
+                        <small>
+                            <NextLink href="/forgot-password">
+                                <a className="text-blue-500">
+                                    Forget password?
+                                </a>
+                            </NextLink>
+                        </small>
 
-                    <small>
-                        Don't have account?
-                        <NextLink href="/register">
-                            <a className="ml-1 text-blue-500 ">Signup</a>
-                        </NextLink>
-                    </small>
+                        <small>
+                            Don't have account?
+                            <NextLink href="/register">
+                                <a className="ml-1 text-blue-500 ">Signup</a>
+                            </NextLink>
+                        </small>
+                    </div>
                 </div>
             </div>
         </div>

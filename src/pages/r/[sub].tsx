@@ -8,6 +8,7 @@ import { ChangeEvent, createRef, useEffect, useState } from 'react';
 import { useAuthState } from '../../context/auth';
 import classNames from 'classnames';
 import axios from 'axios';
+import Sidebar from '../../components/Sidebar';
 
 interface SubProps {}
 
@@ -142,6 +143,7 @@ const SubPage: React.FC<SubProps> = ({}) => {
                     {/* Posts & Sidebar */}
                     <div className="container flex pt-5">
                         <div className="w-160">{postMarkup}</div>
+                        <Sidebar sub={sub} />
                     </div>
                 </>
             )}
