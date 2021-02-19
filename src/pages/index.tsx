@@ -16,6 +16,7 @@ dayjs.extend(relativeTime);
 export default function Home({}) {
     const { data: posts } = useSWR<Post[]>('/posts');
     const { data: topSubs } = useSWR('/misc/top-subs');
+    console.log('posts: ', posts);
 
     // const [posts, setPosts] = useState<Post[]>([]);
 
@@ -53,18 +54,18 @@ export default function Home({}) {
                                     key={sub.name}
                                     className="flex items-center px-4 py-2 text-xs border-b"
                                 >
-                                    <div className="mr-2 overflow-hidden rounded-full cursor-pointer">
-                                        <Link href={`/r/${sub.name}`}>
-                                            <Image
-                                                src={sub.imageUrl}
-                                                alt="Sub"
-                                                width={(6 * 16) / 4}
-                                                height={(6 * 16) / 4}
-                                            />
-                                        </Link>
-                                    </div>
                                     <Link href={`/r/${sub.name}`}>
-                                        <a className="font-bold hover:text-blue-500 ">
+                                        <Image
+                                            className="rounded-full cursor-pointer "
+                                            src={sub.imageUrl}
+                                            alt="Sub"
+                                            width={(6 * 16) / 4}
+                                            height={(6 * 16) / 4}
+                                        />
+                                    </Link>
+
+                                    <Link href={`/r/${sub.name}`}>
+                                        <a className="ml-2 font-bold hover:text-blue-500 ">
                                             /r/${sub.name}
                                         </a>
                                     </Link>
