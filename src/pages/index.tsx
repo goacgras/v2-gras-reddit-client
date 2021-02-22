@@ -10,13 +10,15 @@ import PostCard from '../components/PostCard';
 import useSWR from 'swr';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useAuthState } from '../context/auth';
 
 dayjs.extend(relativeTime);
 
 export default function Home({}) {
+    const { authenticated } = useAuthState();
+
     const { data: posts } = useSWR<Post[]>('/posts');
-    const { data: topSubs } = useSWR('/misc/top-subs');
-    console.log('posts: ', posts);
+    const { data: topSubs } = useSWR<Sub[]>('/misc/top-subs');
 
     // const [posts, setPosts] = useState<Post[]>([]);
 
@@ -49,19 +51,22 @@ export default function Home({}) {
                             </p>
                         </div>
                         <div>
-                            {topSubs?.map((sub: Sub) => (
+                            {topSubs?.map((sub) => (
                                 <div
                                     key={sub.name}
                                     className="flex items-center px-4 py-2 text-xs border-b"
                                 >
                                     <Link href={`/r/${sub.name}`}>
-                                        <Image
-                                            className="rounded-full cursor-pointer "
-                                            src={sub.imageUrl}
-                                            alt="Sub"
-                                            width={(6 * 16) / 4}
-                                            height={(6 * 16) / 4}
-                                        />
+                                        {/* Add <a> tag in every Next/Link */}
+                                        <a>
+                                            <Image
+                                                className="rounded-full cursor-pointer "
+                                                src={sub.imageUrl}
+                                                alt="Sub"
+                                                width={(6 * 16) / 4}
+                                                height={(6 * 16) / 4}
+                                            />
+                                        </a>
                                     </Link>
 
                                     <Link href={`/r/${sub.name}`}>
@@ -75,6 +80,15 @@ export default function Home({}) {
                                 </div>
                             ))}
                         </div>
+                        {authenticated ? (
+                            <div className="p-4 border-t-2">
+                                <Link href="/subs/create">
+                                    <a className="w-full px-2 py-1 blue button">
+                                        Create Community
+                                    </a>
+                                </Link>
+                            </div>
+                        ) : null}
                     </div>
                 </div>
             </div>

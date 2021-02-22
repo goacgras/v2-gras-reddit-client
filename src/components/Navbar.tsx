@@ -45,7 +45,6 @@ const Navbar: React.FC<NavbarProps> = ({}) => {
                 try {
                     const { data } = await axios.get(`/subs/search/${name}`);
                     setSubs(data);
-                    console.log(data);
                 } catch (err) {
                     console.log(err);
                 }
