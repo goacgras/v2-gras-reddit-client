@@ -119,7 +119,7 @@ const Slug: React.FC<slugProps> = ({}) => {
             </Link>
             <div className="container flex pt-5">
                 {/* Post */}
-                <div className="w-160">
+                <div className="w-full p-4 md:p-0 md:w-160">
                     <div className="bg-white rounded">
                         {post && (
                             <>

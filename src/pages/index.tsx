@@ -7,18 +7,36 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import { Post, Sub } from '../types';
 import PostCard from '../components/PostCard';
 // import { GetServerSideProps } from 'next';
-import useSWR from 'swr';
+import useSWR, { useSWRInfinite } from 'swr';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useAuthState } from '../context/auth';
+import { useEffect, useState } from 'react';
 
 dayjs.extend(relativeTime);
 
 export default function Home({}) {
+    const [observedPost, setObservedPost] = useState('');
+
     const { authenticated } = useAuthState();
 
-    const { data: posts } = useSWR<Post[]>('/posts');
+    // const { data: posts } = useSWR<Post[]>('/posts');
     const { data: topSubs } = useSWR<Sub[]>('/misc/top-subs');
+
+    const {
+        data,
+        error,
+        mutate,
+        size: page,
+        setSize: setPage,
+        isValidating,
+        revalidate
+    } = useSWRInfinite<Post[]>((index) => `/posts?page=${index}`, {
+        revalidateAll: true
+    });
+
+    const isInitialLoading = !data && !error;
+    const posts: Post[] = data ? [].concat(...data) : [];
 
     // const [posts, setPosts] = useState<Post[]>([]);
 
@@ -29,6 +47,33 @@ export default function Home({}) {
     //         .catch((err) => console.log(err));
     // }, []);
 
+    useEffect(() => {
+        if (!posts || posts.length === 0) return;
+
+        const id = posts[posts.length - 1].identifier;
+
+        if (id !== observedPost) {
+            setObservedPost(id);
+            observeElement(document.getElementById(id));
+        }
+    }, [posts]);
+
+    const observeElement = (element: HTMLElement) => {
+        if (!element) return;
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (entries[0].isIntersecting === true) {
+                    console.log('bottom of post');
+                    setPage(page + 1);
+                    observer.unobserve(element);
+                }
+            },
+            { threshold: 1 }
+        );
+        observer.observe(element);
+    };
+
     return (
         <>
             <Head>
@@ -36,14 +81,24 @@ export default function Home({}) {
             </Head>
             <div className="container flex pt-4">
                 {/* Post feed */}
-                <div className="w-160">
+                {isInitialLoading && (
+                    <p className="text-lg text-center">Loading..</p>
+                )}
+                <div className="w-full px-4 md:w-160 md:p-0">
                     {posts?.map((post) => (
-                        <PostCard post={post} key={post.identifier} />
+                        <PostCard
+                            post={post}
+                            key={post.identifier}
+                            revalidate={revalidate}
+                        />
                     ))}
                 </div>
+                {isValidating && posts.length > 0 && (
+                    <p className="text-lg text-center">Loading More..</p>
+                )}
 
                 {/* sidebar */}
-                <div className="ml-6 w-80">
+                <div className="hidden ml-6 md:block w-80">
                     <div className="bg-white rounded">
                         <div className="p-4 border-b-2">
                             <p className="text-lg font-semibold text-center">

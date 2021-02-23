@@ -21,7 +21,7 @@ const SubPage: React.FC<SubProps> = ({}) => {
     const fileInputRef = createRef<HTMLInputElement>();
     const subName = router.query?.sub;
 
-    const { data: sub, error } = useSWR<Sub>(
+    const { data: sub, error, revalidate } = useSWR<Sub>(
         subName ? `/subs/${subName}` : null
     );
 
@@ -69,7 +69,11 @@ const SubPage: React.FC<SubProps> = ({}) => {
         );
     } else {
         postMarkup = sub.posts.map((post) => (
-            <PostCard key={post.identifier} post={post} />
+            <PostCard
+                key={post.identifier}
+                post={post}
+                revalidate={revalidate}
+            />
         ));
     }
 
@@ -142,7 +146,9 @@ const SubPage: React.FC<SubProps> = ({}) => {
 
                     {/* Posts & Sidebar */}
                     <div className="container flex pt-5">
-                        <div className="w-160">{postMarkup}</div>
+                        <div className="w-full p-4 md:w-160 md:p-0">
+                            {postMarkup}
+                        </div>
                         <Sidebar sub={sub} />
                     </div>
                 </>
