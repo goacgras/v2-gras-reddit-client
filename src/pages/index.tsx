@@ -35,8 +35,12 @@ export default function Home({}) {
         revalidateAll: true
     });
 
+    console.log('DATA: ', typeof data);
+
     const isInitialLoading = !data && !error;
     const posts: Post[] = data ? [].concat(...data) : [];
+
+    console.log('POST: ', posts);
 
     // const [posts, setPosts] = useState<Post[]>([]);
 
@@ -55,6 +59,7 @@ export default function Home({}) {
         if (id !== observedPost) {
             setObservedPost(id);
             observeElement(document.getElementById(id));
+            // console.log('ObserveEl: ', document.getElementById(id));
         }
     }, [posts]);
 
@@ -64,7 +69,7 @@ export default function Home({}) {
         const observer = new IntersectionObserver(
             (entries) => {
                 if (entries[0].isIntersecting === true) {
-                    console.log('bottom of post');
+                    // console.log('bottom of post');
                     setPage(page + 1);
                     observer.unobserve(element);
                 }

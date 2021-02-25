@@ -48,3 +48,8 @@ export interface Comment {
     userVote: number;
     voteScore: number;
 }
+
+export interface PaginatedPosts {
+    hasMore: Boolean;
+    posts: Post[];
+}
